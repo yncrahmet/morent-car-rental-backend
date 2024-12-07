@@ -1,4 +1,5 @@
 package com.archisacademy.morent.entities;
 
-public class User {
+
+public class User  {
 }
