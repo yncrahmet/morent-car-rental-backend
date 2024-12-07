@@ -3,6 +3,7 @@ package com.archisacademy.morent.services.concretes;
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.VehicleResponse;
+import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
 import com.archisacademy.morent.entities.Vehicle;
 import com.archisacademy.morent.exceptions.VehicleNotFoundException;
 import com.archisacademy.morent.repositories.VehicleRepository;
@@ -29,7 +30,7 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public VehicleResponse updateVehicle(UUID vehicleId, VehicleUpdateRequest vehicleUpdateRequest) {
+    public VehicleUpdateResponse updateVehicle(UUID vehicleId, VehicleUpdateRequest vehicleUpdateRequest) {
 
         Vehicle vehicle = vehicleRepository.findByVehicleId(vehicleId)
                 .orElseThrow(() -> new VehicleNotFoundException("No vehicle to update found!"));
@@ -38,9 +39,9 @@ public class VehicleServiceImpl implements VehicleService {
         modelMapper.getConfiguration().setCollectionsMergeEnabled(true);
         modelMapper.map(vehicleUpdateRequest, vehicle);
 
-        Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+        vehicleRepository.save(vehicle);
 
-        return new VehicleResponse("Vehicle updated successfully", updatedVehicle.getVehicleId());
+        return new VehicleUpdateResponse("Vehicle updated successfully");
     }
 
 }

@@ -3,6 +3,7 @@ package com.archisacademy.morent.controllers;
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.VehicleResponse;
+import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
 import com.archisacademy.morent.services.abstracts.VehicleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,9 @@ public class VehicleController {
     }
 
     @PutMapping("/{vehicleId}")
-    public ResponseEntity<VehicleResponse> updateVehicle(@PathVariable UUID vehicleId,
-                                                         @Valid @RequestBody VehicleUpdateRequest vehicleUpdateRequest) {
-        VehicleResponse response = vehicleService.updateVehicle(vehicleId, vehicleUpdateRequest);
+    public ResponseEntity<VehicleUpdateResponse> updateVehicle(@PathVariable UUID vehicleId,
+                                                               @Valid @RequestBody VehicleUpdateRequest vehicleUpdateRequest) {
+        VehicleUpdateResponse response = vehicleService.updateVehicle(vehicleId, vehicleUpdateRequest);
         return ResponseEntity.ok(response);
     }
 
