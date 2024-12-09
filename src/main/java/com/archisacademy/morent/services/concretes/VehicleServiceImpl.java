@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,8 +34,6 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = vehicleRepository.findByVehicleId(vehicleId)
                 .orElseThrow(() -> new VehicleNotFoundException("No vehicle to update found!"));
 
-        modelMapper.getConfiguration().setSkipNullEnabled(true);
-        modelMapper.getConfiguration().setCollectionsMergeEnabled(true);
         modelMapper.map(vehicleUpdateRequest, vehicle);
 
         vehicleRepository.save(vehicle);
