@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceImpl implements VehicleService {
@@ -21,5 +24,26 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = modelMapper.map(vehicleRequest, Vehicle.class);
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
         return new VehicleResponse("Vehicle added successfully", savedVehicle.getVehicleId());
+    }
+
+    @Override
+    public VehicleResponse getVehicleById(String vehicleId){
+        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleId(UUID.fromString(vehicleId));
+        if(vehicle.isPresent()){
+            vehicle.get();
+            return new VehicleResponse(
+                    "Vehicle retrieved successfully",
+                    vehicle.get().getVehicleId(),
+                    vehicle.get().getMake(),
+                    vehicle.get().getModel(),
+                    vehicle.get().getYear(),
+                    vehicle.get().getPricePerDay().doubleValue(),
+                    String.join(", ", vehicle.get().getFeatures()),
+                    vehicle.get().isAvailability(),
+                    vehicle.get().getTermsAndConditions()
+            );
+        }
+        return null;
+
     }
 }

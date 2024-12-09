@@ -6,4 +6,5 @@ import com.archisacademy.morent.entities.Vehicle;
 
 public interface VehicleService {
     VehicleResponse addVehicle(VehicleRequest vehicleRequest);
+    VehicleResponse getVehicleById(String vehicleId);
 }
