@@ -2,14 +2,17 @@ package com.archisacademy.morent.services.abstracts;
 
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.responses.VehicleFilterResponse;
+import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.VehicleResponse;
-import com.archisacademy.morent.entities.Vehicle;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-
 import java.util.List;
+import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
+
+import java.util.UUID;
 
 public interface VehicleService {
     VehicleResponse addVehicle(VehicleRequest vehicleRequest);
+
+    VehicleUpdateResponse updateVehicle(UUID vehicleId, VehicleUpdateRequest vehicleUpdateRequest);
+
    List<VehicleFilterResponse> getVehiclesByType(String type);
 }

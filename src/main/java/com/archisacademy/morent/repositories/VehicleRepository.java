@@ -7,7 +7,12 @@ import org.w3c.dom.stylesheets.LinkStyle;
 
 import java.util.List;
 
+import java.util.Optional;
+import java.util.UUID;
+
 public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
+
+    Optional<Vehicle> findByVehicleId(UUID vehicleId);
 
     List<Vehicle> findByTypeIgnoreCase(String type);
 }
