@@ -25,7 +25,8 @@ public class VehicleRequest {
 
     @NotBlank(message = "Location cannot be empty")
     private String location;
-
+    @NotBlank(message = "Type cannot be empty")
+    private String type;
     @NotNull(message = "Price per day cannot be null")
     @Positive(message = "Price per day must be a positive value")
     private BigDecimal pricePerDay;
