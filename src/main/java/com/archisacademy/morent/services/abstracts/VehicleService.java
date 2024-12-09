@@ -1,9 +1,15 @@
 package com.archisacademy.morent.services.abstracts;
 
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
+import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.VehicleResponse;
-import com.archisacademy.morent.entities.Vehicle;
+import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
+
+import java.util.UUID;
 
 public interface VehicleService {
     VehicleResponse addVehicle(VehicleRequest vehicleRequest);
+
+    VehicleUpdateResponse updateVehicle(UUID vehicleId, VehicleUpdateRequest vehicleUpdateRequest);
+
 }
