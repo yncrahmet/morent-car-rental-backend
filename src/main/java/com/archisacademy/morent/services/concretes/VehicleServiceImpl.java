@@ -1,8 +1,10 @@
 package com.archisacademy.morent.services.concretes;
 
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
+import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.VehicleDetails;
 import com.archisacademy.morent.dtos.responses.VehicleResponse;
+import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
 import com.archisacademy.morent.entities.Vehicle;
 import com.archisacademy.morent.exceptions.VehicleNotFoundException;
 import com.archisacademy.morent.repositories.VehicleRepository;
@@ -12,8 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
+import java.util.Optional;
+
 
 
 @Service
@@ -31,6 +34,19 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public VehicleUpdateResponse updateVehicle(UUID vehicleId, VehicleUpdateRequest vehicleUpdateRequest) {
+
+        Vehicle vehicle = vehicleRepository.findByVehicleId(vehicleId)
+                .orElseThrow(() -> new VehicleNotFoundException("No vehicle to update found!"));
+
+        modelMapper.map(vehicleUpdateRequest, vehicle);
+
+        vehicleRepository.save(vehicle);
+
+        return new VehicleUpdateResponse("Vehicle updated successfully");
+    }
+
+     @Override
     public VehicleDetails getVehicleById(UUID vehicleId){
         Optional<Vehicle> vehicle = vehicleRepository.findByVehicleId(vehicleId);
         return vehicle.map(vehicle1 -> {
