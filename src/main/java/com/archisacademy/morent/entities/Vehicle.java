@@ -46,6 +46,9 @@ public class Vehicle {
     @Column(name = "feature")
     private List<String> features;
 
+    @Column
+    private String termsAndConditions;
+
     @Column(name = "availability", nullable = false)
     private boolean availability;
 
