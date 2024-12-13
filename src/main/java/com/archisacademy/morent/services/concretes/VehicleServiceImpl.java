@@ -1,6 +1,7 @@
 package com.archisacademy.morent.services.concretes;
 
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
+import com.archisacademy.morent.dtos.responses.SearchVehicleResponse;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.VehicleDetails;
 import com.archisacademy.morent.dtos.responses.VehicleResponse;
@@ -13,6 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import java.util.UUID;
 import java.util.Optional;
@@ -32,6 +37,33 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
         return new VehicleResponse("Vehicle added successfully", savedVehicle.getVehicleId());
     }
+
+    @Override
+    public List<SearchVehicleResponse> searchVehicles(String location, LocalDate startDate, LocalDate endDate, String vehicleType) {
+        List<Vehicle> vehicles = vehicleRepository.findAll()
+                .stream()
+                .filter(vehicle -> location == null || vehicle.getLocation().equalsIgnoreCase(location))
+                .filter(Vehicle::isAvailability)
+                .collect(Collectors.toList());
+
+        if (vehicles.isEmpty()) {
+            return List.of();
+        }
+
+        return vehicles.stream()
+                .map(vehicle -> new SearchVehicleResponse(
+                        vehicle.getVehicleId(),
+                        vehicle.getMake(),
+                        vehicle.getModel(),
+                        vehicle.getYear(),
+                        vehicle.getLocation(),
+                        vehicle.getPricePerDay(),
+                        vehicle.getFeatures(),
+                        vehicle.isAvailability()
+                ))
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public VehicleUpdateResponse updateVehicle(UUID vehicleId, VehicleUpdateRequest vehicleUpdateRequest) {
