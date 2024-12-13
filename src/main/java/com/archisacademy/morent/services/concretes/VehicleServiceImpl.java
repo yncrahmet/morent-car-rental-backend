@@ -2,7 +2,9 @@ package com.archisacademy.morent.services.concretes;
 
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.responses.VehicleFilterResponse;
+import com.archisacademy.morent.dtos.responses.SearchVehicleResponse;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
+import com.archisacademy.morent.dtos.responses.VehicleDetails;
 import com.archisacademy.morent.dtos.responses.VehicleResponse;
 import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
 import com.archisacademy.morent.entities.Vehicle;
@@ -11,12 +13,15 @@ import com.archisacademy.morent.repositories.VehicleRepository;
 import com.archisacademy.morent.services.abstracts.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import java.time.LocalDate;
 import java.util.UUID;
+import java.util.Optional;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +46,33 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public List<SearchVehicleResponse> searchVehicles(String location, LocalDate startDate, LocalDate endDate, String vehicleType) {
+        List<Vehicle> vehicles = vehicleRepository.findAll()
+                .stream()
+                .filter(vehicle -> location == null || vehicle.getLocation().equalsIgnoreCase(location))
+                .filter(Vehicle::isAvailability)
+                .collect(Collectors.toList());
+
+        if (vehicles.isEmpty()) {
+            return List.of();
+        }
+
+        return vehicles.stream()
+                .map(vehicle -> new SearchVehicleResponse(
+                        vehicle.getVehicleId(),
+                        vehicle.getMake(),
+                        vehicle.getModel(),
+                        vehicle.getYear(),
+                        vehicle.getLocation(),
+                        vehicle.getPricePerDay(),
+                        vehicle.getFeatures(),
+                        vehicle.isAvailability()
+                ))
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
     public VehicleUpdateResponse updateVehicle(UUID vehicleId, VehicleUpdateRequest vehicleUpdateRequest) {
 
         Vehicle vehicle = vehicleRepository.findByVehicleId(vehicleId)
@@ -51,6 +83,16 @@ public class VehicleServiceImpl implements VehicleService {
         vehicleRepository.save(vehicle);
 
         return new VehicleUpdateResponse("Vehicle updated successfully");
+    }
+
+     @Override
+    public VehicleDetails getVehicleById(UUID vehicleId){
+        Optional<Vehicle> vehicle = vehicleRepository.findByVehicleId(vehicleId);
+        return vehicle.map(vehicle1 -> {
+            VehicleDetails vehicleDetails = new VehicleDetails();
+            BeanUtils.copyProperties(vehicle1, vehicleDetails);
+            return vehicleDetails;
+        }).orElseThrow(() -> new VehicleNotFoundException("Vehicle id is wrong."));
     }
 
 }
