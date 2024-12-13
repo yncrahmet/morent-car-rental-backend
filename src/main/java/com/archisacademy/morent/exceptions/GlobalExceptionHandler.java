@@ -36,4 +36,10 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(HttpStatus.BAD_REQUEST, "Validation Error", errors.toString());
     }
 
+    @ExceptionHandler(VehicleNotFoundException.class)
+    public ResponseEntity<?> handleVehicleNotFound(VehicleNotFoundException ex) {
+        log.info("Vehicle not found: {}", ex.getMessage());
+        return buildResponseEntity(HttpStatus.NOT_FOUND, "Vehicle Not Found", ex.getMessage());
+    }
+
 }

@@ -12,4 +12,5 @@ public class VehicleResponse {
 
     private String message;
     private UUID vehicleId;
+
 }
