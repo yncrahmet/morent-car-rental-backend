@@ -1,13 +1,13 @@
 package com.archisacademy.morent.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.context.annotation.EnableMBeanExport;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -52,11 +52,17 @@ public class Vehicle {
     @Column(name = "availability", nullable = false)
     private boolean availability;
 
+    @Column(name = "type", nullable = false)
+    private String type;
+
+
     @CreationTimestamp
+    @JsonIgnore
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @JsonIgnore
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 

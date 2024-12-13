@@ -1,6 +1,7 @@
 package com.archisacademy.morent.services.concretes;
 
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
+import com.archisacademy.morent.dtos.responses.VehicleFilterResponse;
 import com.archisacademy.morent.dtos.responses.SearchVehicleResponse;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.VehicleDetails;
@@ -14,11 +15,9 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import java.time.LocalDate;
 import java.util.UUID;
 import java.util.Optional;
 
@@ -36,6 +35,14 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = modelMapper.map(vehicleRequest, Vehicle.class);
         Vehicle savedVehicle = vehicleRepository.save(vehicle);
         return new VehicleResponse("Vehicle added successfully", savedVehicle.getVehicleId());
+    }
+
+    @Override
+    public List<VehicleFilterResponse> getVehiclesByType(String type) {
+        List<Vehicle> vehicles = vehicleRepository.findByTypeIgnoreCase(type);
+        return vehicles.stream().
+                map(vehicle -> modelMapper.map(vehicle, VehicleFilterResponse.class))
+                .collect(Collectors.toList());
     }
 
     @Override

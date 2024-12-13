@@ -2,24 +2,24 @@ package com.archisacademy.morent.controllers;
 
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.responses.SearchVehicleResponse;
+import com.archisacademy.morent.dtos.responses.VehicleFilterResponse;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.VehicleDetails;
 import com.archisacademy.morent.dtos.responses.VehicleResponse;
+import org.springframework.web.bind.annotation.*;
 import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
-import com.archisacademy.morent.exceptions.VehicleNotFoundException;
 import com.archisacademy.morent.services.abstracts.VehicleService;
 import jakarta.validation.Valid;
+import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
-import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/vehicles")
@@ -52,6 +52,11 @@ public class VehicleController {
         return ResponseEntity.ok(response);
     }
 
+
+    @GetMapping("/type/{type}")
+    public List<VehicleFilterResponse> getVehiclesByType(@PathVariable String type) {
+        return vehicleService.getVehiclesByType(type);
+    }
      @GetMapping("/{vehicleId}")
     public ResponseEntity<?> getVehicleById(@PathVariable UUID vehicleId) {
         VehicleDetails vehicleDetails = vehicleService.getVehicleById(vehicleId);
