@@ -22,8 +22,8 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "review_id", nullable = false, unique = true, updatable = true)
-    private String reviewId = UUID.randomUUID().toString();
+    @Column(name = "review_id", nullable = false, unique = true, updatable = false)
+    private UUID reviewId = UUID.randomUUID();
 
     @Column(name = "rating", nullable = false)
     private int rating;
