@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
@@ -41,5 +43,14 @@ public class ReviewServiceImpl implements ReviewService {
                 .orElse(new ReviewResponse("Review not found"));
 
     }
-
+    @Override
+    public ReviewResponse deleteReview(Long reviewId) {
+        Optional<Review> review = reviewRepository.findById(reviewId);
+        if (review.isPresent()) {
+            reviewRepository.delete(review.get());
+            return new ReviewResponse("Review deleted successfully");
+        } else {
+            return new ReviewResponse("Review not found");
+        }
+    }
 }

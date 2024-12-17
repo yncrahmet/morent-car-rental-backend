@@ -1,15 +1,15 @@
-
+server :
+  port : 8080
 
 spring:
   application:
     name: morent
 
-
   datasource:
     url: jdbc:postgresql://localhost:5432/morent
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: 1234
+    password: 12345
 
   jpa:
     properties:
