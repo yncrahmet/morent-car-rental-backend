@@ -1,13 +1,15 @@
 package com.archisacademy.morent.ModelMappper;
 
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ModelMapperServiceImpl implements ModelMapperService {
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
 
     @Override

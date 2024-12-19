@@ -3,23 +3,32 @@ package com.archisacademy.morent.services.concretes;
 import com.archisacademy.morent.ApiResponse.ApiResponse;
 import com.archisacademy.morent.ModelMappper.ModelMapperServiceImpl;
 import com.archisacademy.morent.dtos.requests.CreateUserRequest;
-import com.archisacademy.morent.dtos.requests.UserDTO;
 import com.archisacademy.morent.entities.User;
+import com.archisacademy.morent.jwt.JwtService;
 import com.archisacademy.morent.repositories.UserRepository;
+import com.archisacademy.morent.services.abstracts.UserService;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl  {
-        private final UserRepository userRepository;
-        private final ModelMapperServiceImpl modelMapperService;
-    public UserServiceImpl(UserRepository userRepository, ModelMapperServiceImpl modelMapperService) {
-        this.userRepository = userRepository;
-        this.modelMapperService = modelMapperService;
-    }
+@RequiredArgsConstructor
+public class UserServiceImpl implements UserService {
+    private final UserRepository userRepository;
+    private final ModelMapperServiceImpl modelMapperService;
+    private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder passwordEncoder;
+
 
     public ApiResponse save(CreateUserRequest dto) {
-        User user = this.modelMapperService.request().map(dto,User.class);//burada parantez içindeki veriyi dto yu , User.class a çevir diyoruz. Dto içinde tam tersini yapıyoruz.
-        User save = userRepository.save(user);
-        return new ApiResponse<>(true,"İşlem başarılı.",save);
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+        User user = modelMapper.map(dto, User.class);
+        user.setPassword(encodedPassword);
+        user.setRoles(dto.getAuthorities());
+        User savedUser = userRepository.save(user);
+
+        return new ApiResponse(true, "İşlem başarılı.", savedUser);
     }
 }
+
