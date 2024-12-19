@@ -10,4 +10,6 @@ public interface ReviewService {
 
     ReviewResponse updateReview(Long reviewId, ReviewUpdateRequest reviewUpdateRequest);
 
+    ReviewResponse deleteReview(Long reviewId);
+
 }
