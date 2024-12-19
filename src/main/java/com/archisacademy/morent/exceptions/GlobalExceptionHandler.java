@@ -42,4 +42,9 @@ public class GlobalExceptionHandler {
         return buildResponseEntity(HttpStatus.NOT_FOUND, "Vehicle Not Found", ex.getMessage());
     }
 
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<?> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        log.warn("User registration conflict: {}", ex.getMessage());
+        return buildResponseEntity(HttpStatus.CONFLICT, "User Conflict", ex.getMessage());
+    }
 }
