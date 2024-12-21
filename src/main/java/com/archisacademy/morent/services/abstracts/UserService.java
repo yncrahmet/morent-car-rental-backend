@@ -1,10 +1,9 @@
 package com.archisacademy.morent.services.abstracts;
 
-import com.archisacademy.morent.dtos.requests.UserStatusRequest;
-import com.archisacademy.morent.dtos.responses.UserResponse;
 
-import java.util.UUID;
+import com.archisacademy.morent.ApiResponse.ApiResponse;
+import com.archisacademy.morent.dtos.requests.CreateUserRequest;
 
-public interface UserService {
-    UserResponse updateUserStatus( Long userId, UserStatusRequest userStatusRequest);
+public interface UserService  {
+    ApiResponse save(CreateUserRequest dto);
 }
