@@ -53,6 +53,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Booking> bookings;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

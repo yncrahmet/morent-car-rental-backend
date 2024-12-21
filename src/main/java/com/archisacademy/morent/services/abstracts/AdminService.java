@@ -5,6 +5,7 @@ import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
 import com.archisacademy.morent.dtos.auth.RegisterResponse;
 import com.archisacademy.morent.dtos.requests.UserDTO;
+import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
 import com.archisacademy.morent.entities.User;
 
 import java.util.List;
@@ -12,4 +13,5 @@ import java.util.List;
 public interface AdminService {
     RegisterResponse registerAdmin(RegisterRequest registerRequest);
     LoginResponse adminLogin(LoginRequest loginRequest);
+    List<BookingDetailsResponse> getAllBookingDetails();
 }

@@ -3,8 +3,12 @@ package com.archisacademy.morent.controllers;
 import com.archisacademy.morent.dtos.auth.LoginRequest;
 import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
+import com.archisacademy.morent.dtos.requests.BookingRequest;
 import com.archisacademy.morent.dtos.requests.UserDTO;
+import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
+import com.archisacademy.morent.dtos.responses.BookingResponse;
 import com.archisacademy.morent.services.abstracts.AdminService;
+import com.archisacademy.morent.services.abstracts.BookingService;
 import com.archisacademy.morent.services.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +25,7 @@ import java.util.Map;
 public class AdminController {
 
     private final AdminService adminService;
+    private final BookingService bookingService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequest registerRequest) {
@@ -44,4 +49,15 @@ public class AdminController {
         }
     }
 
+    @GetMapping("bookings")
+    public ResponseEntity<List<BookingDetailsResponse>> getAllBookings() {
+        List<BookingDetailsResponse> bookings = adminService.getAllBookingDetails();
+        return ResponseEntity.ok(bookings);
+    }
+
+    @DeleteMapping("/bookings/{id}")
+    public ResponseEntity<String> deleteBooking(@PathVariable Long id) {
+        bookingService.deleteBooking(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Booking cancelled successfully");
+    }
 }
