@@ -1,16 +1,28 @@
 package com.archisacademy.morent.ModelMappper;
 
+import com.archisacademy.morent.dtos.requests.BookingRequest;
+import com.archisacademy.morent.entities.Booking;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Locale;
+import java.util.UUID;
+
 @Service
-@RequiredArgsConstructor
 public class ModelMapperServiceImpl implements ModelMapperService {
 
-    private final ModelMapper modelMapper;
+    private  ModelMapper modelMapper;
 
+    public ModelMapperServiceImpl(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+        modelMapper.addConverter(uuidToLongConverter);
+    }
 
     @Override
     public ModelMapper request() {
@@ -19,13 +31,23 @@ public class ModelMapperServiceImpl implements ModelMapperService {
                 .setAmbiguityIgnored(true);
 
         return modelMapper;
-    }//Request yeni veri eklerken bunu kullanıyoruz.
+    }
 
     @Override
     public ModelMapper response() {
         this.modelMapper.getConfiguration().
                 setMatchingStrategy(MatchingStrategies.LOOSE)
                 .setAmbiguityIgnored(true);
-        return null;
+        return modelMapper;
     }
+
+
+    Converter<UUID, Long> uuidToLongConverter = new Converter<UUID, Long>() {
+        @Override
+        public Long convert(MappingContext<UUID, Long> context) {
+            return context.getSource() != null ? context.getSource().getMostSignificantBits() : null;
+        }
+    };
+
+
 }
