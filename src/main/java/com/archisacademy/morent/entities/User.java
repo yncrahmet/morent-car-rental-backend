@@ -52,6 +52,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Feedback> feedbacks = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Booking> bookings;
 
