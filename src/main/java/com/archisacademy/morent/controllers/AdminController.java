@@ -3,17 +3,13 @@ package com.archisacademy.morent.controllers;
 import com.archisacademy.morent.dtos.auth.LoginRequest;
 import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
-import com.archisacademy.morent.dtos.requests.UserDTO;
+import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
 import com.archisacademy.morent.dtos.responses.UserResponse;
-import com.archisacademy.morent.entities.User;
 import com.archisacademy.morent.services.abstracts.AdminService;
-import com.archisacademy.morent.services.abstracts.UserService;
+import com.archisacademy.morent.services.abstracts.BookingService;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +21,7 @@ import java.util.Map;
 public class AdminController {
 
     private final AdminService adminService;
+    private final BookingService bookingService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequest registerRequest) {
@@ -53,5 +50,16 @@ public class AdminController {
     public ResponseEntity<List<UserResponse>> getAllUsers(){
         List<UserResponse> users= adminService.getAllUsers();
         return ResponseEntity.ok(users);
+    }
+    @GetMapping("bookings")
+    public ResponseEntity<List<BookingDetailsResponse>> getAllBookings() {
+        List<BookingDetailsResponse> bookings = adminService.getAllBookingDetails();
+        return ResponseEntity.ok(bookings);
+    }
+
+    @DeleteMapping("/bookings/{id}")
+    public ResponseEntity<String> deleteBooking(@PathVariable Long id) {
+        bookingService.deleteBooking(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Booking cancelled successfully");
     }
 }
