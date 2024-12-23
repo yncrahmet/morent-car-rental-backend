@@ -20,4 +20,5 @@ public interface VehicleService {
 
     List<SearchVehicleResponse> searchVehicles(String location, LocalDate startDate, LocalDate endDate, String vehicleType);
 
+    List<VehicleReviewsResponse> getVehicleReviews(UUID vehicleId);
 }

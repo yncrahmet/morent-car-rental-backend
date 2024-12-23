@@ -1,12 +1,9 @@
 package com.archisacademy.morent.services.concretes;
 
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
-import com.archisacademy.morent.dtos.responses.VehicleFilterResponse;
-import com.archisacademy.morent.dtos.responses.SearchVehicleResponse;
+import com.archisacademy.morent.dtos.responses.*;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
-import com.archisacademy.morent.dtos.responses.VehicleDetails;
-import com.archisacademy.morent.dtos.responses.VehicleResponse;
-import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
+import com.archisacademy.morent.entities.Review;
 import com.archisacademy.morent.entities.Vehicle;
 import com.archisacademy.morent.exceptions.VehicleNotFoundException;
 import com.archisacademy.morent.repositories.VehicleRepository;
@@ -69,6 +66,20 @@ public class VehicleServiceImpl implements VehicleService {
                         vehicle.isAvailability()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<VehicleReviewsResponse> getVehicleReviews(UUID vehicleId) {
+        Optional<Vehicle> vehicleOptional = vehicleRepository.findByVehicleId(vehicleId);
+
+        if (vehicleOptional.isPresent()) {
+            Vehicle vehicle = vehicleOptional.get();
+            List<Review> reviews = vehicle.getReviews();
+            return reviews.stream()
+                    .map(review -> modelMapper.map(review, VehicleReviewsResponse.class))
+                    .collect(Collectors.toList());
+        }
+        return List.of();
     }
 
 
