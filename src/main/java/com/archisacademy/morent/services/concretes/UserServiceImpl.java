@@ -35,14 +35,11 @@ public class UserServiceImpl implements UserService {
         return new ApiResponse(true, "İşlem başarılı.", savedUser);
     }
 
+    @Override
     public UserUpdateResponse userUpdate(UUID userId, UserUpdateRequest userUpdateRequest){
-
         User user = userRepository.findByUserId(userId).orElseThrow(()->new RuntimeException("User not found!!!"));
-
         modelMapper.map(userUpdateRequest, user);
-
         userRepository.save(user);
-
         return new UserUpdateResponse("User has been updated successfully!!!");
     }
 }
