@@ -46,8 +46,8 @@ public class Vehicle {
     @Column(name = "feature")
     private List<String> features;
 
-    @Column
     private String termsAndConditions;
+
 
     @Column(name = "availability", nullable = false)
     private boolean availability;
@@ -55,6 +55,8 @@ public class Vehicle {
     @Column(name = "type", nullable = false)
     private String type;
 
+    @OneToMany(mappedBy = "vehicle", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Review> reviews;
 
     @CreationTimestamp
     @JsonIgnore
@@ -65,5 +67,16 @@ public class Vehicle {
     @JsonIgnore
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    private List<Booking> bookings;
+
+    public double getDailyRate() {
+        if ("Luxury".equals(this.make)) {
+            return pricePerDay.doubleValue() * 1.5;
+        }
+        return pricePerDay.doubleValue();
+    }
+
 
 }

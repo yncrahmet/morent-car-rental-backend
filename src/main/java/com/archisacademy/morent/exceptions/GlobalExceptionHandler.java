@@ -1,5 +1,7 @@
 package com.archisacademy.morent.exceptions;
 
+import com.archisacademy.morent.exceptions.book.BookingNotFoundException;
+import com.archisacademy.morent.exceptions.book.VehicleAlreadyBookedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -46,5 +48,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleUserAlreadyExists(UserAlreadyExistsException ex) {
         log.warn("User registration conflict: {}", ex.getMessage());
         return buildResponseEntity(HttpStatus.CONFLICT, "User Conflict", ex.getMessage());
+    }
+
+    @ExceptionHandler(VehicleAlreadyBookedException.class)
+    public ResponseEntity<String> handleVehicleAlreadyBookedException(VehicleAlreadyBookedException ex) {
+        log.warn("Vehicle already booked: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(BookingNotFoundException.class)
+    public ResponseEntity<String> handleBookingNotFoundException(BookingNotFoundException ex) {
+        log.info("Booking not found: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

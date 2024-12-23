@@ -6,9 +6,11 @@ import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
 import com.archisacademy.morent.dtos.auth.RegisterResponse;
 import com.archisacademy.morent.dtos.requests.UserDTO;
+import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
 import com.archisacademy.morent.entities.Role;
 import com.archisacademy.morent.entities.User;
 import com.archisacademy.morent.jwt.JwtService;
+import com.archisacademy.morent.repositories.BookingRepository;
 import com.archisacademy.morent.repositories.UserRepository;
 import com.archisacademy.morent.services.abstracts.AdminService;
 import com.archisacademy.morent.services.abstracts.AuthService;
@@ -32,6 +34,7 @@ public class AdminServiceImpl implements AdminService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final ModelMapperServiceImpl modelMapperService;
+    private final BookingRepository bookingRepository;
 
     @Override
     public RegisterResponse registerAdmin(RegisterRequest registerRequest) {
@@ -58,6 +61,13 @@ public class AdminServiceImpl implements AdminService {
         } catch (Exception e) {
             throw new RuntimeException("Invalid username and password " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<BookingDetailsResponse> getAllBookingDetails() {
+        return bookingRepository.findAll().stream()
+                .map(booking -> modelMapperService.request().map(booking,BookingDetailsResponse.class))
+                .collect(Collectors.toList());
     }
 
 }
