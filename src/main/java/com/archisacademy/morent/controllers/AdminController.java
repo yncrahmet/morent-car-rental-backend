@@ -3,17 +3,13 @@ package com.archisacademy.morent.controllers;
 import com.archisacademy.morent.dtos.auth.LoginRequest;
 import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
-import com.archisacademy.morent.dtos.requests.BookingRequest;
-import com.archisacademy.morent.dtos.requests.UserDTO;
 import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
-import com.archisacademy.morent.dtos.responses.BookingResponse;
+import com.archisacademy.morent.dtos.responses.UserResponse;
 import com.archisacademy.morent.services.abstracts.AdminService;
 import com.archisacademy.morent.services.abstracts.BookingService;
-import com.archisacademy.morent.services.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,6 +45,12 @@ public class AdminController {
         }
     }
 
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponse>> getAllUsers(){
+        List<UserResponse> users= adminService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
     @GetMapping("bookings")
     public ResponseEntity<List<BookingDetailsResponse>> getAllBookings() {
         List<BookingDetailsResponse> bookings = adminService.getAllBookingDetails();

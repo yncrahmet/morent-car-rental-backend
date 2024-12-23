@@ -5,7 +5,7 @@ import com.archisacademy.morent.dtos.auth.LoginRequest;
 import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
 import com.archisacademy.morent.dtos.auth.RegisterResponse;
-import com.archisacademy.morent.dtos.requests.UserDTO;
+import com.archisacademy.morent.dtos.responses.UserResponse;
 import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
 import com.archisacademy.morent.entities.Role;
 import com.archisacademy.morent.entities.User;
@@ -16,7 +16,6 @@ import com.archisacademy.morent.services.abstracts.AdminService;
 import com.archisacademy.morent.services.abstracts.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -61,6 +60,20 @@ public class AdminServiceImpl implements AdminService {
         } catch (Exception e) {
             throw new RuntimeException("Invalid username and password " + e.getMessage());
         }
+    }
+
+    @Override
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(user -> new UserResponse(
+                        user.getUserId(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getPhoneNumber(),
+                        user.isActive()
+                ))
+                .collect(Collectors.toList());
     }
 
     @Override
