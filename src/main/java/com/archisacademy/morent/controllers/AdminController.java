@@ -4,9 +4,11 @@ import com.archisacademy.morent.dtos.auth.LoginRequest;
 import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
 import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
+import com.archisacademy.morent.dtos.responses.FeedbackAdminResponse;
 import com.archisacademy.morent.dtos.responses.UserResponse;
 import com.archisacademy.morent.services.abstracts.AdminService;
 import com.archisacademy.morent.services.abstracts.BookingService;
+import com.archisacademy.morent.services.abstracts.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ public class AdminController {
 
     private final AdminService adminService;
     private final BookingService bookingService;
+    private final FeedbackService feedbackService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequest registerRequest) {
@@ -62,4 +65,11 @@ public class AdminController {
         bookingService.deleteBooking(id);
         return ResponseEntity.status(HttpStatus.OK).body("Booking cancelled successfully");
     }
+
+    @GetMapping("/feedback")
+    public ResponseEntity<List<FeedbackAdminResponse>> findAllFeedback() {
+        List<FeedbackAdminResponse> feedBackList = feedbackService.findAll();
+        return ResponseEntity.ok(feedBackList);
+    }
+
 }
