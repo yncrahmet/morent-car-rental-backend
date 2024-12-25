@@ -3,10 +3,14 @@ package com.archisacademy.morent.controllers;
 import com.archisacademy.morent.dtos.auth.LoginRequest;
 import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
+import com.archisacademy.morent.dtos.requests.VehicleMaintenanceRequest;
+import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
 import com.archisacademy.morent.dtos.responses.UserResponse;
+import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
 import com.archisacademy.morent.services.abstracts.AdminService;
 import com.archisacademy.morent.services.abstracts.BookingService;
+import com.archisacademy.morent.services.abstracts.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -22,6 +27,7 @@ public class AdminController {
 
     private final AdminService adminService;
     private final BookingService bookingService;
+    private final VehicleService vehicleService;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequest registerRequest) {
@@ -62,4 +68,14 @@ public class AdminController {
         bookingService.deleteBooking(id);
         return ResponseEntity.status(HttpStatus.OK).body("Booking cancelled successfully");
     }
+
+    @PutMapping("/vehicles/{vehicleId}/maintenance")
+    public ResponseEntity<VehicleUpdateResponse> updateVehicleMaintenanceStatus(
+            @PathVariable UUID vehicleId,
+            @RequestBody VehicleMaintenanceRequest vehicleMaintenanceRequest)
+    {
+        VehicleUpdateResponse response = vehicleService.updateMaintenanceStatus(vehicleId, vehicleMaintenanceRequest);
+        return ResponseEntity.ok(response);
+    }
+
 }
