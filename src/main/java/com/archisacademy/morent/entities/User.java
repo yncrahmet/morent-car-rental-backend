@@ -8,11 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor
@@ -74,8 +72,7 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
+    public boolean isEnabled(boolean b) {
         return true;
     }
 
@@ -83,4 +80,5 @@ public class User implements UserDetails {
     public String getUsername() {
         return username;
     }
+
 }

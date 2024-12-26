@@ -3,14 +3,17 @@ package com.archisacademy.morent.services.concretes;
 import com.archisacademy.morent.ApiResponse.ApiResponse;
 import com.archisacademy.morent.ModelMappper.ModelMapperServiceImpl;
 import com.archisacademy.morent.dtos.requests.CreateUserRequest;
+import com.archisacademy.morent.dtos.responses.UserResponse;
 import com.archisacademy.morent.entities.User;
-import com.archisacademy.morent.jwt.JwtService;
 import com.archisacademy.morent.repositories.UserRepository;
 import com.archisacademy.morent.services.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,18 @@ public class UserServiceImpl implements UserService {
         User savedUser = userRepository.save(user);
 
         return new ApiResponse(true, "İşlem başarılı.", savedUser);
+    }
+
+    @Override
+    public UserResponse updateUserStatus(Long userId) {
+        Optional<User> user= userRepository.findById(userId);
+        if(user.isPresent()){
+        user.get().isEnabled(false);
+            userRepository.saveAndFlush(user.get());
+            return new UserResponse("User status updated successfully");
+        }
+        throw new RuntimeException("User not found");
+
     }
 }
 
