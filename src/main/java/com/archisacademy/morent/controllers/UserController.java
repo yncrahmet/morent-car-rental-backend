@@ -6,6 +6,8 @@ import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
 import com.archisacademy.morent.dtos.auth.RegisterResponse;
 import com.archisacademy.morent.dtos.requests.CreateUserRequest;
+import com.archisacademy.morent.dtos.requests.UserUpdateRequest;
+import com.archisacademy.morent.dtos.responses.UserUpdateResponse;
 import com.archisacademy.morent.dtos.responses.UserResponse;
 import com.archisacademy.morent.services.concretes.AuthServiceImpl;
 import com.archisacademy.morent.services.concretes.UserServiceImpl;
@@ -13,8 +15,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.access.prepost.PreAuthorize;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/users")
@@ -44,11 +48,18 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping("/update/{userId}")
+    public ResponseEntity<UserUpdateResponse> userUpdate(@PathVariable UUID userId, @Valid @RequestBody UserUpdateRequest userUpdateRequest){
+        UserUpdateResponse response = userService.userUpdate(userId, userUpdateRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping("/status/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponse> updateUserStatus(@PathVariable Long userId) {
         UserResponse response = userService.updateUserStatus(userId);
         return ResponseEntity.ok(response);
     }
+
 
 }

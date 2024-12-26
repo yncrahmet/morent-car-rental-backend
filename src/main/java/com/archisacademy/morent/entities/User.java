@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.*;
 
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -51,10 +52,15 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Feedback> feedbacks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Booking> bookings;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
-
     }
 
     @Override
@@ -72,7 +78,8 @@ public class User implements UserDetails {
         return true;
     }
 
-    public boolean isEnabled(boolean b) {
+    @Override
+    public boolean isEnabled() {
         return true;
     }
 
@@ -80,5 +87,4 @@ public class User implements UserDetails {
     public String getUsername() {
         return username;
     }
-
 }
