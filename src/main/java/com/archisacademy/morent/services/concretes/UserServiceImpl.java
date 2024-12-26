@@ -5,6 +5,7 @@ import com.archisacademy.morent.ModelMappper.ModelMapperServiceImpl;
 import com.archisacademy.morent.dtos.requests.CreateUserRequest;
 import com.archisacademy.morent.dtos.requests.UserUpdateRequest;
 import com.archisacademy.morent.dtos.responses.UserUpdateResponse;
+import com.archisacademy.morent.dtos.responses.UserResponse;
 import com.archisacademy.morent.entities.User;
 import com.archisacademy.morent.jwt.JwtService;
 import com.archisacademy.morent.repositories.UserRepository;
@@ -15,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +44,18 @@ public class UserServiceImpl implements UserService {
         modelMapper.map(userUpdateRequest, user);
         userRepository.save(user);
         return new UserUpdateResponse("User has been updated successfully!!!");
+    }
+
+    @Override
+    public UserResponse updateUserStatus(Long userId) {
+        Optional<User> user= userRepository.findById(userId);
+        if(user.isPresent()){
+        user.get().isEnabled(false);
+            userRepository.saveAndFlush(user.get());
+            return new UserResponse("User status updated successfully");
+        }
+        throw new RuntimeException("User not found");
+
     }
 }
 
