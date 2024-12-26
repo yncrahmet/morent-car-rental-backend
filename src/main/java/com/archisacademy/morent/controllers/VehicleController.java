@@ -1,13 +1,9 @@
 package com.archisacademy.morent.controllers;
 
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
-import com.archisacademy.morent.dtos.responses.SearchVehicleResponse;
-import com.archisacademy.morent.dtos.responses.VehicleFilterResponse;
+import com.archisacademy.morent.dtos.responses.*;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
-import com.archisacademy.morent.dtos.responses.VehicleDetails;
-import com.archisacademy.morent.dtos.responses.VehicleResponse;
 import org.springframework.web.bind.annotation.*;
-import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
 import com.archisacademy.morent.services.abstracts.VehicleService;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -65,6 +61,12 @@ public class VehicleController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/{vehicleId}/availability")
+    public ResponseEntity<VehicleAvailabilityResponse> isVehicleAvailable(@PathVariable UUID vehicleId){
+        VehicleAvailabilityResponse response = vehicleService.isVehicleAvailable(vehicleId);
+        return ResponseEntity.ok(response);
     }
 
 }
