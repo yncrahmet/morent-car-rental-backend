@@ -16,4 +16,7 @@ public class UserResponse {
     private String phoneNumber;
     private boolean active;
     private String message;
+
+    public UserResponse(UUID userId, String username, String email, String phoneNumber, boolean active) {
+    }
 }

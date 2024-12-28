@@ -14,6 +14,7 @@ import com.archisacademy.morent.services.concretes.UserServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -59,6 +60,12 @@ public class UserController {
     public ResponseEntity<UserResponse> updateUserStatus(@PathVariable Long userId) {
         UserResponse response = userService.updateUserStatus(userId);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/get-user-bookings",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getUserBookings(@PathVariable Long userId){
+        ApiResponse userBookings = userService.getUserBookings(userId);
+        return new ResponseEntity<>(userBookings,HttpStatus.OK);
     }
 
 
