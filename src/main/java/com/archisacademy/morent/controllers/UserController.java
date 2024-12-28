@@ -58,14 +58,14 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    /*
+
     @PutMapping("/status/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponse> updateUserStatus(@PathVariable Long userId) {
         UserResponse response = userService.updateUserStatus(userId);
         return ResponseEntity.ok(response);
     }
-     */
+
     @GetMapping("{userId}/notifications")
     public ResponseEntity<List<NotificationRequest>> getUserNotifications(@PathVariable Long userId) {
         return notificationService.getNotificationsForUser(userId);
