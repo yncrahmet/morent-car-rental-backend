@@ -2,12 +2,8 @@ package com.archisacademy.morent.services.concretes;
 
 import com.archisacademy.morent.dtos.requests.VehicleMaintenanceRequest;
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
-import com.archisacademy.morent.dtos.responses.VehicleFilterResponse;
-import com.archisacademy.morent.dtos.responses.SearchVehicleResponse;
+import com.archisacademy.morent.dtos.responses.*;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
-import com.archisacademy.morent.dtos.responses.VehicleDetails;
-import com.archisacademy.morent.dtos.responses.VehicleResponse;
-import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
 import com.archisacademy.morent.entities.Vehicle;
 import com.archisacademy.morent.exceptions.VehicleNotFoundException;
 import com.archisacademy.morent.repositories.VehicleRepository;
@@ -91,6 +87,12 @@ public class VehicleServiceImpl implements VehicleService {
             BeanUtils.copyProperties(vehicle1, vehicleDetails);
             return vehicleDetails;
         }).orElseThrow(() -> new VehicleNotFoundException("Vehicle id is wrong."));
+    }
+
+    @Override
+    public VehicleAvailabilityResponse isVehicleAvailable(UUID vehicleId){
+        Vehicle vehicle = vehicleRepository.findByVehicleId(vehicleId).orElseThrow(()-> new RuntimeException("Vehicle not found"));
+        return new VehicleAvailabilityResponse(vehicle.isAvailability());
     }
 
     @Override
