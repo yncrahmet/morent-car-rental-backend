@@ -4,12 +4,13 @@ import com.archisacademy.morent.dtos.auth.LoginRequest;
 import com.archisacademy.morent.dtos.auth.LoginResponse;
 import com.archisacademy.morent.dtos.auth.RegisterRequest;
 import com.archisacademy.morent.dtos.requests.VehicleMaintenanceRequest;
-import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
 import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
+import com.archisacademy.morent.dtos.responses.FeedbackAdminResponse;
 import com.archisacademy.morent.dtos.responses.UserResponse;
 import com.archisacademy.morent.dtos.responses.VehicleUpdateResponse;
 import com.archisacademy.morent.services.abstracts.AdminService;
 import com.archisacademy.morent.services.abstracts.BookingService;
+import com.archisacademy.morent.services.abstracts.FeedbackService;
 import com.archisacademy.morent.services.abstracts.VehicleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class AdminController {
 
     private final AdminService adminService;
     private final BookingService bookingService;
+    private final FeedbackService feedbackService;
     private final VehicleService vehicleService;
 
     @PostMapping("/register")
@@ -51,12 +53,12 @@ public class AdminController {
         }
     }
 
-
     @GetMapping("/users")
     public ResponseEntity<List<UserResponse>> getAllUsers(){
         List<UserResponse> users= adminService.getAllUsers();
         return ResponseEntity.ok(users);
     }
+
     @GetMapping("bookings")
     public ResponseEntity<List<BookingDetailsResponse>> getAllBookings() {
         List<BookingDetailsResponse> bookings = adminService.getAllBookingDetails();
@@ -68,6 +70,13 @@ public class AdminController {
         bookingService.deleteBooking(id);
         return ResponseEntity.status(HttpStatus.OK).body("Booking cancelled successfully");
     }
+
+    @GetMapping("/feedback")
+    public ResponseEntity<List<FeedbackAdminResponse>> findAllFeedback() {
+        List<FeedbackAdminResponse> feedBackList = feedbackService.findAll();
+        return ResponseEntity.ok(feedBackList);
+    }
+
 
     @PutMapping("/vehicles/{vehicleId}/maintenance")
     public ResponseEntity<VehicleUpdateResponse> updateVehicleMaintenanceStatus(

@@ -4,15 +4,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+@NoArgsConstructor
+public class FeedbackAdminResponse {
+
+    private UUID feedbackId;
+
     private UUID userId;
-    private String username;
-    private String email;
-    private String phoneNumber;
-    private boolean active;
+
+    private String feedbackText;
+
+    private Timestamp dateSubmitted;
+
 }

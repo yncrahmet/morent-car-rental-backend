@@ -37,6 +37,6 @@ public class Booking {
     @Column(name = "total_amount", nullable = false)
     private BigDecimal totalAmount;
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "available")
+    private Boolean available;
 }
