@@ -2,8 +2,10 @@ package com.archisacademy.morent.services.concretes;
 
 import com.archisacademy.morent.ModelMappper.ModelMapperServiceImpl;
 import com.archisacademy.morent.dtos.requests.BookingRequest;
+import com.archisacademy.morent.dtos.requests.BookingStatusRequest;
 import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
 import com.archisacademy.morent.dtos.responses.BookingResponse;
+import com.archisacademy.morent.dtos.responses.BookingStatusResponse;
 import com.archisacademy.morent.entities.Booking;
 import com.archisacademy.morent.entities.User;
 import com.archisacademy.morent.entities.Vehicle;
@@ -14,16 +16,13 @@ import com.archisacademy.morent.repositories.UserRepository;
 import com.archisacademy.morent.repositories.VehicleRepository;
 import com.archisacademy.morent.services.abstracts.BookingService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -85,5 +84,17 @@ public class BookingServiceImpl implements BookingService {
         bookingResponse.setStartDate(booking.getStartDate());
         bookingResponse.setEndDate(booking.getEndDate());
         return bookingResponse;
+    }
+
+    @Override
+    public BookingStatusResponse checkAvailability(BookingStatusRequest request) {
+        LocalDate startDate = LocalDate.parse(request.getStartDate());
+        LocalDate endDate = LocalDate.parse(request.getEndDate());
+        List<Booking> conflictingBookings = bookingRepository.findConflictingBookings(request.getVehicleId(), startDate, endDate);
+        if (conflictingBookings.isEmpty()) {
+            return new BookingStatusResponse(true);
+        } else {
+            return new BookingStatusResponse(false);
+        }
     }
 }

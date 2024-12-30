@@ -7,7 +7,6 @@ import com.archisacademy.morent.dtos.requests.UserUpdateRequest;
 import com.archisacademy.morent.dtos.responses.UserUpdateResponse;
 import com.archisacademy.morent.dtos.responses.UserResponse;
 import com.archisacademy.morent.entities.User;
-import com.archisacademy.morent.jwt.JwtService;
 import com.archisacademy.morent.repositories.UserRepository;
 import com.archisacademy.morent.services.abstracts.UserService;
 import lombok.RequiredArgsConstructor;
@@ -47,12 +46,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse updateUserStatus(Long userId) {
+    public UserUpdateResponse updateUserStatus(Long userId) {
         Optional<User> user= userRepository.findById(userId);
         if(user.isPresent()){
         user.get().isEnabled(false);
             userRepository.saveAndFlush(user.get());
-            return new UserResponse("User status updated successfully");
+            return new UserUpdateResponse("User status updated successfully");
         }
         throw new RuntimeException("User not found");
 
