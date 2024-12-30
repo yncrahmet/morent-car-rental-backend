@@ -56,8 +56,8 @@ public class UserController {
 
     @PutMapping("/status/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<UserResponse> updateUserStatus(@PathVariable Long userId) {
-        UserResponse response = userService.updateUserStatus(userId);
+    public ResponseEntity<UserUpdateResponse> updateUserStatus(@PathVariable Long userId) {
+        UserUpdateResponse response = userService.updateUserStatus(userId);
         return ResponseEntity.ok(response);
     }
 

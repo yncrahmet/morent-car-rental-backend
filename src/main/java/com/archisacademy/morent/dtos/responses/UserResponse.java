@@ -15,5 +15,4 @@ public class UserResponse {
     private String email;
     private String phoneNumber;
     private boolean active;
-    private String message;
 }
