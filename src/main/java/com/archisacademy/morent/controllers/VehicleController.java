@@ -67,4 +67,10 @@ public class VehicleController {
         return vehicleService.getVehicleReviews(vehicleId);
     }
 
+    @GetMapping("/{vehicleId}/availability")
+    public ResponseEntity<VehicleAvailabilityResponse> isVehicleAvailable(@PathVariable UUID vehicleId){
+        VehicleAvailabilityResponse response = vehicleService.isVehicleAvailable(vehicleId);
+        return ResponseEntity.ok(response);
+    }
+
 }

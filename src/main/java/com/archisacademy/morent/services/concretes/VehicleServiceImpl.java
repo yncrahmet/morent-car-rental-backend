@@ -1,5 +1,6 @@
 package com.archisacademy.morent.services.concretes;
 
+import com.archisacademy.morent.dtos.requests.VehicleMaintenanceRequest;
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.responses.*;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
@@ -17,8 +18,6 @@ import java.util.stream.Collectors;
 import java.time.LocalDate;
 import java.util.UUID;
 import java.util.Optional;
-
-
 
 @Service
 @RequiredArgsConstructor
@@ -82,7 +81,6 @@ public class VehicleServiceImpl implements VehicleService {
         return List.of();
     }
 
-
     @Override
     public VehicleUpdateResponse updateVehicle(UUID vehicleId, VehicleUpdateRequest vehicleUpdateRequest) {
 
@@ -104,6 +102,27 @@ public class VehicleServiceImpl implements VehicleService {
             BeanUtils.copyProperties(vehicle1, vehicleDetails);
             return vehicleDetails;
         }).orElseThrow(() -> new VehicleNotFoundException("Vehicle id is wrong."));
+    }
+
+    @Override
+    public VehicleAvailabilityResponse isVehicleAvailable(UUID vehicleId){
+        Vehicle vehicle = vehicleRepository.findByVehicleId(vehicleId).orElseThrow(()-> new RuntimeException("Vehicle not found"));
+        return new VehicleAvailabilityResponse(vehicle.isAvailability());
+    }
+
+    @Override
+    public VehicleUpdateResponse updateMaintenanceStatus(UUID vehicleId, VehicleMaintenanceRequest vehicleMaintenanceRequest) {
+
+        return vehicleRepository.findByVehicleId(vehicleId)
+                .map(vehicle -> {
+
+                    vehicle.setUnderMaintenance(vehicleMaintenanceRequest.getUnderMaintenance());
+                    vehicleRepository.save(vehicle);
+                    return new VehicleUpdateResponse("Vehicle maintenance status updated");
+
+                })
+                .orElse(new VehicleUpdateResponse("Vehicle not found!"));
+
     }
 
 }

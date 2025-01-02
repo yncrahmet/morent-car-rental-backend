@@ -12,4 +12,6 @@ public interface UserService  {
     ApiResponse save(CreateUserRequest dto);
 
     UserUpdateResponse userUpdate(UUID userId, UserUpdateRequest userUpdateRequest);
+
+    UserUpdateResponse updateUserStatus(Long userId);
 }
