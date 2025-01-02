@@ -1,11 +1,15 @@
 package com.archisacademy.morent.services.concretes;
 
+import com.archisacademy.morent.ModelMappper.ModelMapperService;
+import com.archisacademy.morent.ModelMappper.ModelMapperServiceImpl;
 import com.archisacademy.morent.dtos.requests.ReviewRequest;
 import com.archisacademy.morent.dtos.requests.ReviewUpdateRequest;
 import com.archisacademy.morent.dtos.responses.ReviewResponse;
 import com.archisacademy.morent.entities.Review;
+import com.archisacademy.morent.entities.User;
 import com.archisacademy.morent.entities.Vehicle;
 import com.archisacademy.morent.repositories.ReviewRepository;
+import com.archisacademy.morent.repositories.UserRepository;
 import com.archisacademy.morent.repositories.VehicleRepository;
 import com.archisacademy.morent.services.abstracts.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +26,20 @@ import java.util.stream.Collectors;
 public class ReviewServiceImpl implements ReviewService {
 
     private final ReviewRepository reviewRepository;
-    private final ModelMapper modelMapper;
+    private final ModelMapperServiceImpl modelMapper;
     private final VehicleRepository vehicleRepository;
+    private final UserRepository userRepository;
+    private final ModelMapperService modelMapperService;
 
     @Override
     public ReviewResponse submitReview(ReviewRequest reviewRequest){
-        Vehicle vehicle = vehicleRepository.findByVehicleId(reviewRequest.getVehicleId()).orElseThrow(() -> new RuntimeException("Vehicle not found!!!"));
-        Review review = modelMapper.map(reviewRequest, Review.class);
+        Vehicle vehicle = vehicleRepository.findByVehicleId(reviewRequest.getVehicleId()).orElseThrow(
+                () -> new RuntimeException("Vehicle not found!!!"));
+        User user=userRepository.findByUserId(reviewRequest.getUserId()).orElseThrow(
+                () -> new RuntimeException("User not found!!!"));
+        Review review = modelMapper.request().map(reviewRequest, Review.class);
         review.setVehicle(vehicle);
+        review.setUser(user);
         reviewRepository.save(review);
         return new ReviewResponse("Review submitted successfully");
     }
@@ -39,7 +49,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         return reviewRepository.findById(reviewId)
                 .map(review -> {
-                    modelMapper.map(reviewUpdateRequest, review);
+                    modelMapperService.request().map(reviewUpdateRequest, review);
                     reviewRepository.save(review);
                     return new ReviewResponse("Review updated successfully");
                 })

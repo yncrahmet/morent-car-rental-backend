@@ -62,6 +62,10 @@ public class VehicleController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/{vehicleId}/reviews")
+    public List<VehicleReviewsResponse> getReviewsByVehicleId(@PathVariable("vehicleId") UUID vehicleId) {
+        return vehicleService.getVehicleReviews(vehicleId);
+    }
 
     @GetMapping("/{vehicleId}/availability")
     public ResponseEntity<VehicleAvailabilityResponse> isVehicleAvailable(@PathVariable UUID vehicleId){

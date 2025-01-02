@@ -12,7 +12,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ReviewRequest {
 
-
+    @NotBlank(message = "user_id can not be empty!!!")
+    private UUID userId;
 
     @NotBlank(message = "vehicle_id can not be empty!!!")
     private UUID vehicleId;
