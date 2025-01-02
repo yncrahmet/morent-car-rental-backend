@@ -1,5 +1,6 @@
 package com.archisacademy.morent.services.abstracts;
 
+import com.archisacademy.morent.dtos.requests.VehicleMaintenanceRequest;
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.responses.*;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
@@ -20,6 +21,8 @@ public interface VehicleService {
 
     List<SearchVehicleResponse> searchVehicles(String location, LocalDate startDate, LocalDate endDate, String vehicleType);
 
-
     VehicleAvailabilityResponse isVehicleAvailable(UUID vehicleId);
+
+    VehicleUpdateResponse updateMaintenanceStatus(UUID vehicleId, VehicleMaintenanceRequest vehicleMaintenanceRequest);
+
 }

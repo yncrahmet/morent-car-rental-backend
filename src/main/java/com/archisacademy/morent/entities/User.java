@@ -81,8 +81,7 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean isEnabled() {
+    public boolean isEnabled(boolean b) {
         return true;
     }
 

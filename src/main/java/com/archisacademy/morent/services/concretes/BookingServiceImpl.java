@@ -3,8 +3,10 @@ package com.archisacademy.morent.services.concretes;
 import com.archisacademy.morent.ModelMappper.ModelMapperServiceImpl;
 import com.archisacademy.morent.dtos.requests.BookingRequest;
 import com.archisacademy.morent.dtos.requests.NotificationRequest;
+import com.archisacademy.morent.dtos.requests.BookingStatusRequest;
 import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
 import com.archisacademy.morent.dtos.responses.BookingResponse;
+import com.archisacademy.morent.dtos.responses.BookingStatusResponse;
 import com.archisacademy.morent.entities.Booking;
 import com.archisacademy.morent.entities.User;
 import com.archisacademy.morent.entities.Vehicle;
@@ -86,5 +88,17 @@ public class BookingServiceImpl implements BookingService {
         bookingResponse.setStartDate(booking.getStartDate());
         bookingResponse.setEndDate(booking.getEndDate());
         return bookingResponse;
+    }
+
+    @Override
+    public BookingStatusResponse checkAvailability(BookingStatusRequest request) {
+        LocalDate startDate = LocalDate.parse(request.getStartDate());
+        LocalDate endDate = LocalDate.parse(request.getEndDate());
+        List<Booking> conflictingBookings = bookingRepository.findConflictingBookings(request.getVehicleId(), startDate, endDate);
+        if (conflictingBookings.isEmpty()) {
+            return new BookingStatusResponse(true);
+        } else {
+            return new BookingStatusResponse(false);
+        }
     }
 }
