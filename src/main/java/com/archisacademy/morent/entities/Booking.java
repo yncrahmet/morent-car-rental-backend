@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -19,6 +21,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "booking_id", nullable = false)
     private UUID bookingId=UUID.randomUUID();
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -39,4 +42,6 @@ public class Booking {
 
     @Column(name = "available")
     private Boolean available;
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<Payment> payments;
 }
