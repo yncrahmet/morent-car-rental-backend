@@ -20,6 +20,7 @@ public interface VehicleService {
 
     List<SearchVehicleResponse> searchVehicles(String location, LocalDate startDate, LocalDate endDate, String vehicleType);
 
+    List<VehicleReviewsResponse> getVehicleReviews(UUID vehicleId);
     VehicleAvailabilityResponse isVehicleAvailable(UUID vehicleId);
 
     String vehicleDeleteSoft(Long vehicleId);

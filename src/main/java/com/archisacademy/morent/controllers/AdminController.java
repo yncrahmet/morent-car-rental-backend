@@ -53,11 +53,14 @@ public class AdminController {
         }
     }
 
+
     @GetMapping("/users")
     public ResponseEntity<List<UserResponse>> getAllUsers(){
         List<UserResponse> users= adminService.getAllUsers();
         return ResponseEntity.ok(users);
     }
+
+
 
     @GetMapping("bookings")
     public ResponseEntity<List<BookingDetailsResponse>> getAllBookings() {

@@ -1,6 +1,7 @@
 package com.archisacademy.morent.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,13 @@ public class Review {
     @Column(name = "review_text", nullable = false)
     private String reviewText;
 
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     @Column(name = "created_at", nullable = false)
     private Timestamp createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)

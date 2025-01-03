@@ -2,6 +2,7 @@ package com.archisacademy.morent.services.concretes;
 
 import com.archisacademy.morent.ModelMappper.ModelMapperServiceImpl;
 import com.archisacademy.morent.dtos.requests.BookingRequest;
+import com.archisacademy.morent.dtos.requests.NotificationRequest;
 import com.archisacademy.morent.dtos.requests.BookingStatusRequest;
 import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
 import com.archisacademy.morent.dtos.responses.BookingResponse;
@@ -17,12 +18,12 @@ import com.archisacademy.morent.repositories.VehicleRepository;
 import com.archisacademy.morent.services.abstracts.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ public class BookingServiceImpl implements BookingService {
     private final VehicleRepository vehicleRepository;
     private final BookingRepository bookingRepository;
     private final ModelMapperServiceImpl modelMapperService;
+    private final NotificationServiceImpl notificationService;
 
     @Override
     public BookingResponse createBooking(BookingRequest request) {
@@ -59,7 +61,9 @@ public class BookingServiceImpl implements BookingService {
         BigDecimal totalAmount = BigDecimal.valueOf(vehicle.getDailyRate() * days);
         booking.setTotalAmount(totalAmount);
         bookingRepository.save(booking);
-
+        String message = "Your booking for vehicle " + vehicle.getVehicleId() + " has been confirmed";
+        NotificationRequest notificationRequest = new NotificationRequest(user.getUserId(), message);
+        notificationService.createNotification(notificationRequest);
         return new BookingResponse("Booking successful", booking.getBookingId(), booking.getTotalAmount());
     }
 
