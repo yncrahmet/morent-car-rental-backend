@@ -24,6 +24,8 @@ public class Booking {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "vehicle_id", nullable = false)
     private Vehicle vehicle;

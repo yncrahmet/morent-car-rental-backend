@@ -21,4 +21,5 @@ public class BookingDetailsResponse {
     private LocalDate endDate;
     private BigDecimal totalAmount;
     private Boolean available;
+    private String status;
 }

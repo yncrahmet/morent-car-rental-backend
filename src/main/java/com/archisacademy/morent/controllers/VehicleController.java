@@ -3,6 +3,7 @@ package com.archisacademy.morent.controllers;
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.responses.*;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.archisacademy.morent.services.abstracts.VehicleService;
 import jakarta.validation.Valid;
@@ -73,4 +74,9 @@ public class VehicleController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(value = "/soft-delete/{Id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> softDelete(@PathVariable Long Id) {
+        String s = vehicleService.vehicleDeleteSoft(Id);
+        return ResponseEntity.ok(s);
+    }
 }

@@ -19,6 +19,8 @@ import java.time.LocalDate;
 import java.util.UUID;
 import java.util.Optional;
 
+
+
 @Service
 @RequiredArgsConstructor
 public class VehicleServiceImpl implements VehicleService {
@@ -67,6 +69,7 @@ public class VehicleServiceImpl implements VehicleService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public List<VehicleReviewsResponse> getVehicleReviews(UUID vehicleId) {
         Optional<Vehicle> vehicleOptional = vehicleRepository.findByVehicleId(vehicleId);
@@ -111,6 +114,13 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
+    public String vehicleDeleteSoft(Long vehicleId) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(()-> new VehicleNotFoundException("Vehicle not found"));
+        vehicle.setActive(false);
+        return "Vehicle soft deleted successfully";
+    }
+
+    @Override
     public VehicleUpdateResponse updateMaintenanceStatus(UUID vehicleId, VehicleMaintenanceRequest vehicleMaintenanceRequest) {
 
         return vehicleRepository.findByVehicleId(vehicleId)
@@ -124,5 +134,6 @@ public class VehicleServiceImpl implements VehicleService {
                 .orElse(new VehicleUpdateResponse("Vehicle not found!"));
 
     }
+
 
 }

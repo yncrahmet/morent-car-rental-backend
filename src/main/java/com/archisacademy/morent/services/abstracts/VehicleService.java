@@ -24,6 +24,7 @@ public interface VehicleService {
     List<VehicleReviewsResponse> getVehicleReviews(UUID vehicleId);
     VehicleAvailabilityResponse isVehicleAvailable(UUID vehicleId);
 
+    String vehicleDeleteSoft(Long vehicleId);
     VehicleUpdateResponse updateMaintenanceStatus(UUID vehicleId, VehicleMaintenanceRequest vehicleMaintenanceRequest);
 
 }
