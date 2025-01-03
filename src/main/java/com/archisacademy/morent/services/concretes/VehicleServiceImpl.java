@@ -96,4 +96,13 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = vehicleRepository.findByVehicleId(vehicleId).orElseThrow(()-> new RuntimeException("Vehicle not found"));
         return new VehicleAvailabilityResponse(vehicle.isAvailability());
     }
+
+    @Override
+    public String vehicleDeleteSoft(Long vehicleId) {
+        Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(()-> new VehicleNotFoundException("Vehicle not found"));
+        vehicle.setActive(false);
+        return "Vehicle soft deleted successfully";
+    }
+
+
 }
