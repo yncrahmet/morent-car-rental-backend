@@ -1,5 +1,6 @@
 package com.archisacademy.morent.services.concretes;
 
+import com.archisacademy.morent.dtos.requests.VehicleMaintenanceRequest;
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.responses.*;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
@@ -117,6 +118,21 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = vehicleRepository.findById(vehicleId).orElseThrow(()-> new VehicleNotFoundException("Vehicle not found"));
         vehicle.setActive(false);
         return "Vehicle soft deleted successfully";
+    }
+
+    @Override
+    public VehicleUpdateResponse updateMaintenanceStatus(UUID vehicleId, VehicleMaintenanceRequest vehicleMaintenanceRequest) {
+
+        return vehicleRepository.findByVehicleId(vehicleId)
+                .map(vehicle -> {
+
+                    vehicle.setUnderMaintenance(vehicleMaintenanceRequest.getUnderMaintenance());
+                    vehicleRepository.save(vehicle);
+                    return new VehicleUpdateResponse("Vehicle maintenance status updated");
+
+                })
+                .orElse(new VehicleUpdateResponse("Vehicle not found!"));
+
     }
 
 
