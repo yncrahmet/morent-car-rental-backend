@@ -74,6 +74,9 @@ public class Vehicle {
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
     private List<Booking> bookings;
 
+    @Column(name = "under_maintenance", nullable = false)
+    private Boolean underMaintenance = false;
+
     public double getDailyRate() {
         if ("Luxury".equals(this.make)) {
             return pricePerDay.doubleValue() * 1.5;
