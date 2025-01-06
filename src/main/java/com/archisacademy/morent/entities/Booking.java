@@ -21,7 +21,7 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "booking_id", nullable = false)
+    @Column(name = "booking_id", nullable = false , unique = true, updatable = false)
     private UUID bookingId=UUID.randomUUID();
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -42,6 +42,6 @@ public class Booking {
 
     @Column(name = "available")
     private Boolean available;
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL )
     private List<Payment> payments;
 }

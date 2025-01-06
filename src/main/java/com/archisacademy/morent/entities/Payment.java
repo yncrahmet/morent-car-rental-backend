@@ -1,6 +1,7 @@
 package com.archisacademy.morent.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,11 +20,17 @@ public class Payment {
     private Long id;
     @Column(name = "payment_uuid")
     private UUID paymentId=UUID.randomUUID();
+
     @ManyToOne
     @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
     private Booking booking;
+
     @Column(name = "amount", nullable = false)
     private Long amount;
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
+
+    @Version
+    private Long version=0L;
+    
 }
