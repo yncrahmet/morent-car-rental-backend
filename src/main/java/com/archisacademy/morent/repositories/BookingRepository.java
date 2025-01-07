@@ -20,4 +20,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
                                           @Param("endDate") LocalDate endDate);
 
     Optional<Booking> findByBookingIdEquals(UUID bookingId);
+
+    Optional<Booking> findByBookingId(UUID bookingId);
+
 }
