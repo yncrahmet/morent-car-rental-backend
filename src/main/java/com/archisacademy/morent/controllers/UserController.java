@@ -9,6 +9,7 @@ import com.archisacademy.morent.dtos.requests.CreateUserRequest;
 import com.archisacademy.morent.dtos.requests.NotificationRequest;
 import com.archisacademy.morent.dtos.requests.UserUpdateRequest;
 import com.archisacademy.morent.dtos.responses.NotificationResponse;
+import com.archisacademy.morent.dtos.responses.ProfileRetrievalResponse;
 import com.archisacademy.morent.dtos.responses.UserUpdateResponse;
 import com.archisacademy.morent.dtos.responses.UserResponse;
 import com.archisacademy.morent.services.concretes.AuthServiceImpl;
@@ -81,6 +82,10 @@ public class UserController {
     }
 
 
-
+    @GetMapping("{userId}/profile")
+    public ResponseEntity<ProfileRetrievalResponse> userProfileRetrieval(@PathVariable UUID userId){
+        ProfileRetrievalResponse profileRetrievalResponse = userService.userProfileRetrieval(userId);
+        return ResponseEntity.ok(profileRetrievalResponse);
+    }
 
 }
