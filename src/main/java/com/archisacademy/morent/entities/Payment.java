@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Entity
@@ -26,7 +27,7 @@ public class Payment {
     private Booking booking;
 
     @Column(name = "amount", nullable = false)
-    private Long amount;
+    private BigDecimal amount;
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 

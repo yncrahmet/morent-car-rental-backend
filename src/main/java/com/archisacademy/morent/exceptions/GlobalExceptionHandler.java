@@ -55,9 +55,17 @@ public class GlobalExceptionHandler {
         log.warn("Vehicle already booked: {}", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(BookingNotFoundException.class)
     public ResponseEntity<String> handleBookingNotFoundException(BookingNotFoundException ex) {
         log.info("Booking not found: {}", ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(PaymentNotFoundException.class)
+    public ResponseEntity<String> handlePaymentNotFoundException(PaymentNotFoundException ex) {
+        log.info("Payment not found: {}", ex.getMessage());
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
 }
