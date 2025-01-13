@@ -64,6 +64,6 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setStatus(confirmPaymentRequest.getStatus());
         paymentRepository.save(payment);
 
-        return new PaymentResponse("Payment confirmed", payment.getPaymentId());
+        return new PaymentResponse("Payment confirmed");
     }
 }
