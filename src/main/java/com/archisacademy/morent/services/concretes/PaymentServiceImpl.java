@@ -1,5 +1,6 @@
 package com.archisacademy.morent.services.concretes;
 
+import com.archisacademy.morent.dtos.requests.ConfirmPaymentRequest;
 import com.archisacademy.morent.dtos.requests.NotificationRequest;
 import com.archisacademy.morent.dtos.requests.PaymentRefundRequest;
 import com.archisacademy.morent.dtos.requests.PaymentRequest;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +44,7 @@ public class PaymentServiceImpl implements PaymentService {
             payment.setAmount(paymentRequest.getAmount());
             payment.setBooking(byBookingIdEquals.get());
             payment.setPaymentMethod(paymentRequest.getPaymentMethod());
+            payment.setStatus("PENDING");
             Payment save = paymentRepository.save(payment);
             PaymentResponse paymentResponse = modelMapper.map(save, PaymentResponse.class);
             paymentResponse.setMessage("Payment initiated");
@@ -49,6 +52,23 @@ public class PaymentServiceImpl implements PaymentService {
         }else {
             throw new BookingNotFoundException("Booking not found with this id: " + paymentRequest.getBookingId());
         }
+    }
+
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public PaymentResponse confirmPayment(ConfirmPaymentRequest confirmPaymentRequest) {
+        Optional<Payment> optionalPayment = paymentRepository.findByPaymentId(confirmPaymentRequest.getPaymentId());
+
+        if (optionalPayment.isEmpty()) {
+            throw new PaymentNotFoundException("Payment not found with ID: " + confirmPaymentRequest.getPaymentId());
+        }
+
+        Payment payment = optionalPayment.get();
+        payment.setStatus(confirmPaymentRequest.getStatus());
+        paymentRepository.save(payment);
+
+        return new PaymentResponse("Payment confirmed");
     }
 
     @Override

@@ -31,6 +31,9 @@ public class Payment {
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 
+    @Column(name = "status", nullable = false)
+    private String status = "PENDING";
+
     @Version
     private Long version=0L;
     

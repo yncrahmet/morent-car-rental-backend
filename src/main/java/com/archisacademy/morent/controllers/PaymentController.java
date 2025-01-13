@@ -1,5 +1,6 @@
 package com.archisacademy.morent.controllers;
 
+import com.archisacademy.morent.dtos.requests.ConfirmPaymentRequest;
 import com.archisacademy.morent.dtos.requests.PaymentRefundRequest;
 import com.archisacademy.morent.dtos.requests.PaymentRequest;
 import com.archisacademy.morent.dtos.responses.PaymentRefundResponse;
@@ -32,4 +33,10 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK).body(paymentRefundResponse);
     }
 
+
+    @PostMapping("/confirm")
+    public ResponseEntity<PaymentResponse> confirmPayment(@RequestBody ConfirmPaymentRequest confirmPaymentRequest) {
+        PaymentResponse paymentResponse = paymentService.confirmPayment(confirmPaymentRequest);
+        return ResponseEntity.ok(paymentResponse);
+    }
 }
