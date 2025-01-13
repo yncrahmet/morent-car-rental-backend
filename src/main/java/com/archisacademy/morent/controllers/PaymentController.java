@@ -1,9 +1,10 @@
 package com.archisacademy.morent.controllers;
 
 import com.archisacademy.morent.dtos.requests.ConfirmPaymentRequest;
+import com.archisacademy.morent.dtos.requests.PaymentRefundRequest;
 import com.archisacademy.morent.dtos.requests.PaymentRequest;
+import com.archisacademy.morent.dtos.responses.PaymentRefundResponse;
 import com.archisacademy.morent.dtos.responses.PaymentResponse;
-import com.archisacademy.morent.entities.Payment;
 import com.archisacademy.morent.services.abstracts.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
 public class PaymentController {
+
     private final PaymentService paymentService;
 
     @PostMapping("/initiate")
@@ -24,6 +26,13 @@ public class PaymentController {
         PaymentResponse paymentResponse = paymentService.initiatePayment(paymentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(paymentResponse);
     }
+
+    @PostMapping("/refund")
+    public ResponseEntity<PaymentRefundResponse> refundPayment(@RequestBody PaymentRefundRequest paymentRefundRequest) {
+        PaymentRefundResponse paymentRefundResponse = paymentService.refundPayment(paymentRefundRequest);
+        return ResponseEntity.status(HttpStatus.OK).body(paymentRefundResponse);
+    }
+
 
     @PostMapping("/confirm")
     public ResponseEntity<PaymentResponse> confirmPayment(@RequestBody ConfirmPaymentRequest confirmPaymentRequest) {

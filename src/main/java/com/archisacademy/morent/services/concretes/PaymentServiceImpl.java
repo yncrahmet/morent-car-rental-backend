@@ -1,7 +1,10 @@
 package com.archisacademy.morent.services.concretes;
 
 import com.archisacademy.morent.dtos.requests.ConfirmPaymentRequest;
+import com.archisacademy.morent.dtos.requests.NotificationRequest;
+import com.archisacademy.morent.dtos.requests.PaymentRefundRequest;
 import com.archisacademy.morent.dtos.requests.PaymentRequest;
+import com.archisacademy.morent.dtos.responses.PaymentRefundResponse;
 import com.archisacademy.morent.dtos.responses.PaymentResponse;
 import com.archisacademy.morent.entities.Booking;
 import com.archisacademy.morent.entities.Payment;
@@ -27,6 +30,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final BookingRepository bookingRepository;
     private final ModelMapper modelMapper;
+    private final NotificationServiceImpl notificationService;
 
     @Override
     @Transactional(propagation= Propagation.REQUIRED)
@@ -66,4 +70,33 @@ public class PaymentServiceImpl implements PaymentService {
 
         return new PaymentResponse("Payment confirmed");
     }
+
+    @Override
+    public PaymentRefundResponse refundPayment(PaymentRefundRequest paymentRefundRequest) {
+
+        try {
+
+            Booking booking = bookingRepository.findByBookingId(paymentRefundRequest.getBookingId())
+                    .orElseThrow(() -> new BookingNotFoundException("Booking not found with this id: " + paymentRefundRequest.getBookingId()));
+
+            Payment payment = paymentRepository.findByBookingId(booking.getId())
+                    .orElseThrow(() -> new PaymentNotFoundException("Payment not found with this id: " + booking.getId()));
+
+            if (payment.getAmount().compareTo(paymentRefundRequest.getAmount()) >= 0) {
+                payment.setAmount(paymentRefundRequest.getAmount());
+                paymentRepository.save(payment);
+                String message = "Your refund processed successfully";
+                NotificationRequest notificationRequest = new NotificationRequest(booking.getUser().getUserId(),message);
+                notificationService.createNotification(notificationRequest);
+                return new PaymentRefundResponse("Refund processed successfully");
+            } else {
+                return new PaymentRefundResponse("Refund amount exceeds payment amount");
+            }
+
+        }catch (Exception e) {
+            throw new BookingNotFoundException("Booking not found with this id: " + paymentRefundRequest.getBookingId());
+        }
+
+    }
+
 }

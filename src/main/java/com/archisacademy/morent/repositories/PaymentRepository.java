@@ -7,8 +7,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 
+
+
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     Optional<Payment> findByBookingId(Long bookingId);
     Optional<Payment> findByPaymentId(UUID paymentId);
+
+
 }

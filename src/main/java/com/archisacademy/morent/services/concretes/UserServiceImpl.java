@@ -4,9 +4,7 @@ import com.archisacademy.morent.ApiResponse.ApiResponse;
 import com.archisacademy.morent.ModelMappper.ModelMapperServiceImpl;
 import com.archisacademy.morent.dtos.requests.CreateUserRequest;
 import com.archisacademy.morent.dtos.requests.UserUpdateRequest;
-import com.archisacademy.morent.dtos.responses.BookingDetailsResponse;
-import com.archisacademy.morent.dtos.responses.UserUpdateResponse;
-import com.archisacademy.morent.dtos.responses.UserResponse;
+import com.archisacademy.morent.dtos.responses.*;
 import com.archisacademy.morent.entities.Booking;
 import com.archisacademy.morent.entities.User;
 import com.archisacademy.morent.repositories.UserRepository;
@@ -81,6 +79,26 @@ public class UserServiceImpl implements UserService {
         return new ApiResponse<>(true,"İşlem başarılı.",bookings);
     }
 
+    @Override
+    public ProfileRetrievalResponse userProfileRetrieval(UUID userId){
+        User user = userRepository.findByUserId(userId).orElseThrow(()-> new RuntimeException("User not found"));
+        ProfileRetrievalResponse profileRetrievalResponse = modelMapper.map(user, ProfileRetrievalResponse.class);
+
+        List<BookingDetailsResponse> bookings = user.getBookings().stream().map(booking ->{
+            BookingDetailsResponse response = new BookingDetailsResponse();
+            response.setBookingId(booking.getBookingId());
+            response.setEndDate(booking.getEndDate());
+            response.setStatus(booking.getStatus());
+            response.setTotalAmount(booking.getTotalAmount());
+            response.setUserId(booking.getUser().getUserId());
+            response.setVehicleId(booking.getVehicle().getVehicleId());
+            return response;
+        }).collect(Collectors.toList());
+
+        profileRetrievalResponse.setBookings(bookings);
+
+        return profileRetrievalResponse;
+    }
 
 }
 
