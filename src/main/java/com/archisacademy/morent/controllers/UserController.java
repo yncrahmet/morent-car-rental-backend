@@ -8,10 +8,8 @@ import com.archisacademy.morent.dtos.auth.RegisterResponse;
 import com.archisacademy.morent.dtos.requests.CreateUserRequest;
 import com.archisacademy.morent.dtos.requests.NotificationRequest;
 import com.archisacademy.morent.dtos.requests.UserUpdateRequest;
-import com.archisacademy.morent.dtos.responses.NotificationResponse;
-import com.archisacademy.morent.dtos.responses.ProfileRetrievalResponse;
-import com.archisacademy.morent.dtos.responses.UserUpdateResponse;
-import com.archisacademy.morent.dtos.responses.UserResponse;
+import com.archisacademy.morent.dtos.responses.*;
+import com.archisacademy.morent.services.abstracts.PaymentService;
 import com.archisacademy.morent.services.concretes.AuthServiceImpl;
 import com.archisacademy.morent.services.concretes.NotificationServiceImpl;
 import com.archisacademy.morent.services.concretes.UserServiceImpl;
@@ -33,6 +31,7 @@ public class UserController {
 
     private final UserServiceImpl userService;
     private final AuthServiceImpl authService;
+    private final PaymentService paymentService;
     private final NotificationServiceImpl notificationService;
 
     @PostMapping("/save")
@@ -86,6 +85,12 @@ public class UserController {
     public ResponseEntity<ProfileRetrievalResponse> userProfileRetrieval(@PathVariable UUID userId){
         ProfileRetrievalResponse profileRetrievalResponse = userService.userProfileRetrieval(userId);
         return ResponseEntity.ok(profileRetrievalResponse);
+    }
+
+    @GetMapping(value = "{userId}/payment", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PaymentHistoryRespone>> userPaymentHistory(@PathVariable UUID userId){
+        List<PaymentHistoryRespone> respones = paymentService.userPaymentHistory(userId);
+        return ResponseEntity.ok(respones);
     }
 
 }

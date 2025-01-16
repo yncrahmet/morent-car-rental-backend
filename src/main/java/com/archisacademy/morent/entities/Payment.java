@@ -26,6 +26,10 @@ public class Payment {
     @JoinColumn(name = "booking_id", referencedColumnName = "booking_id")
     private Booking booking;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private User user;
+
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
     @Column(name = "payment_method", nullable = false)
