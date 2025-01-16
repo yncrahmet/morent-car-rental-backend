@@ -16,4 +16,6 @@ public class PaymentRequest {
     private String paymentMethod;
     @NotNull(message = "BookingId cannot be null")
     private UUID bookingId;
+    @NotNull(message = "UserId cannot be null")
+    private UUID userId;
 }

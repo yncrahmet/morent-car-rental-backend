@@ -61,6 +61,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Notification> notifications;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Payment> payments;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
