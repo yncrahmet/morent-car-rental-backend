@@ -3,6 +3,7 @@ package com.archisacademy.morent.controllers;
 import com.archisacademy.morent.dtos.requests.VehicleRequest;
 import com.archisacademy.morent.dtos.responses.*;
 import com.archisacademy.morent.dtos.requests.VehicleUpdateRequest;
+import com.archisacademy.morent.services.abstracts.MaintenanceService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.archisacademy.morent.services.abstracts.VehicleService;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VehicleController {
 
     private final VehicleService vehicleService;
+    private final MaintenanceService maintenanceService;
 
     @PostMapping
     public ResponseEntity<VehicleResponse> addVehicle(@Valid @RequestBody VehicleRequest vehicleRequest) {
@@ -78,5 +80,11 @@ public class VehicleController {
     public ResponseEntity<?> softDelete(@PathVariable Long Id) {
         String s = vehicleService.vehicleDeleteSoft(Id);
         return ResponseEntity.ok(s);
+    }
+
+    @GetMapping("{vehicleId}/maintenance-history")
+    public ResponseEntity<List<MaintenanceListResponse>>vehicleMaintenanceList(@PathVariable UUID vehicleId){
+        List<MaintenanceListResponse> responses = maintenanceService.vehicleMaintenanceList(vehicleId);
+        return ResponseEntity.ok(responses);
     }
 }

@@ -16,4 +16,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle,Long> {
     Optional<Vehicle> findByVehicleId(UUID vehicleId);
 
     List<Vehicle> findByTypeIgnoreCase(String type);
+
+
+
 }

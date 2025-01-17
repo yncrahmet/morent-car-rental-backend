@@ -46,6 +46,9 @@ public class Vehicle {
     @Column(name = "feature")
     private List<String> features;
 
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<Maintenance> maintenances;
+
     @Column(name = "active")
     private boolean active;
 
