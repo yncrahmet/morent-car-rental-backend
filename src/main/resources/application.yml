@@ -31,6 +31,9 @@ spring:
     template:
       default-topic: notification-topic
 
+stripe:
+  api:
+    key: sk_test_51QjdjCLIQIDc4FzcLIwieXMNZHvIvShzcCSJyg7q62xoqvqyNV7RoA0EX01nUOlI6MHqG5MCnOtKUYrGj7OftXPt00fo2kOTZ9
 
 
 

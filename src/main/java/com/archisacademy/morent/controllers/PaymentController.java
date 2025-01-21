@@ -1,11 +1,16 @@
 package com.archisacademy.morent.controllers;
 
 import com.archisacademy.morent.dtos.requests.ConfirmPaymentRequest;
+import com.archisacademy.morent.dtos.requests.PaymentIntentRequest;
 import com.archisacademy.morent.dtos.requests.PaymentRefundRequest;
 import com.archisacademy.morent.dtos.requests.PaymentRequest;
+import com.archisacademy.morent.dtos.responses.PaymentIntentResponse;
 import com.archisacademy.morent.dtos.responses.PaymentRefundResponse;
 import com.archisacademy.morent.dtos.responses.PaymentResponse;
 import com.archisacademy.morent.services.abstracts.PaymentService;
+import com.archisacademy.morent.services.abstracts.StripeService;
+import com.stripe.exception.StripeException;
+import com.stripe.model.PaymentIntent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
 
     private final PaymentService paymentService;
+    private final StripeService stripeService;
 
     @PostMapping("/initiate")
     public ResponseEntity<PaymentResponse> initiatePayment(@RequestBody PaymentRequest paymentRequest) {
@@ -39,4 +45,16 @@ public class PaymentController {
         PaymentResponse paymentResponse = paymentService.confirmPayment(confirmPaymentRequest);
         return ResponseEntity.ok(paymentResponse);
     }
+
+    @PostMapping("/create-payment-intent")
+    public ResponseEntity<PaymentIntentResponse> createPaymentIntent(@RequestBody PaymentIntentRequest paymentIntentRequest) {
+        try {
+            PaymentIntent paymentIntent = stripeService.createPaymentIntent(paymentIntentRequest);
+            PaymentIntentResponse response = new PaymentIntentResponse(paymentIntent.getId(), paymentIntent.getClientSecret());
+            return ResponseEntity.ok(response);
+        } catch (StripeException e) {
+            return ResponseEntity.badRequest().body(new PaymentIntentResponse(e.getMessage(),null));
+        }
+    }
+
 }
