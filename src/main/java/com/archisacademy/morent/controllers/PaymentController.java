@@ -48,13 +48,9 @@ public class PaymentController {
 
     @PostMapping("/create-payment-intent")
     public ResponseEntity<PaymentIntentResponse> createPaymentIntent(@RequestBody PaymentIntentRequest paymentIntentRequest) {
-        try {
-            PaymentIntent paymentIntent = stripeService.createPaymentIntent(paymentIntentRequest);
-            PaymentIntentResponse response = new PaymentIntentResponse(paymentIntent.getId(), paymentIntent.getClientSecret());
-            return ResponseEntity.ok(response);
-        } catch (StripeException e) {
-            return ResponseEntity.badRequest().body(new PaymentIntentResponse(e.getMessage(),null));
-        }
+        PaymentIntent paymentIntent = stripeService.createPaymentIntent(paymentIntentRequest);
+        PaymentIntentResponse response = new PaymentIntentResponse(paymentIntent.getId(), paymentIntent.getClientSecret());
+        return ResponseEntity.ok(response);
     }
 
 }

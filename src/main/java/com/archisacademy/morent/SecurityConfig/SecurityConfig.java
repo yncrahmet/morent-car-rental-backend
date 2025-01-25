@@ -31,11 +31,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers(LOGIN, REGISTER, "/api/payments/initiate").permitAll()
+                        .requestMatchers(LOGIN, REGISTER).permitAll()
                         .requestMatchers("/api/admin/register","/api/admin/login").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/user/**").hasRole("USER")
-                        .anyRequest().authenticated()
+                        .anyRequest().hasRole("USER")
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)

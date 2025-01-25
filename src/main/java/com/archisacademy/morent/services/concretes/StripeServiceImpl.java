@@ -1,5 +1,6 @@
 package com.archisacademy.morent.services.concretes;
 
+import com.archisacademy.morent.constant.PaymentConstants;
 import com.archisacademy.morent.dtos.requests.NotificationRequest;
 import com.archisacademy.morent.dtos.requests.PaymentIntentRequest;
 import com.archisacademy.morent.entities.Notification;
@@ -23,18 +24,23 @@ public class StripeServiceImpl implements StripeService {
     private String stripeApiKey;
 
     @Override
-    public PaymentIntent createPaymentIntent(PaymentIntentRequest paymentIntentRequest) throws StripeException {
-        Stripe.apiKey = stripeApiKey;
+    public PaymentIntent createPaymentIntent(PaymentIntentRequest paymentIntentRequest) {
 
-        PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                .setAmount(paymentIntentRequest.getAmount())
-                .setCurrency(paymentIntentRequest.getCurrency())
-                .build();
+        try {
+            Stripe.apiKey = stripeApiKey;
 
-        String message = "Payment intent created successfully";
-        notificationService.sendMessage(message);
+            PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
+                    .setAmount(paymentIntentRequest.getAmount())
+                    .setCurrency(paymentIntentRequest.getCurrency())
+                    .build();
 
-        return PaymentIntent.create(params);
+            notificationService.sendMessage(PaymentConstants.PAYMENT_INTENT_SUCCESS);
+
+            return PaymentIntent.create(params);
+        } catch (StripeException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
 }
