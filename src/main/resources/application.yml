@@ -31,6 +31,10 @@ spring:
     template:
       default-topic: notification-topic
 
+iyzico:
+  apiKey: "sandbox-gvcdnDbDpSh7zKxxbzmg8jEaXYhjyFaT"
+  secretKey: "sandbox-go9aXki5S284DomUN3ilRC7gEbpDBxSQ"
+  baseUrl: "https://sandbox-api.iyzipay.com"
 
 
 

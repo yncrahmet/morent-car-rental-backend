@@ -108,6 +108,13 @@
 			<artifactId>slf4j-api</artifactId>
 			<version>2.0.9</version>
 		</dependency>
+
+		<!-- IYZICO -->
+		<dependency>
+			<groupId>com.iyzipay</groupId>
+			<artifactId>iyzipay-java</artifactId>
+			<version>2.0.125</version>
+		</dependency>
 	</dependencies>
 
 	<build>

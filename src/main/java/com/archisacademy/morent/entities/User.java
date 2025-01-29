@@ -28,6 +28,12 @@ public class User implements UserDetails {
     @Column(name = "user_id", nullable = false, unique = true, updatable = false)
     private UUID userId = UUID.randomUUID();
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     @Column(unique = true, name = "user_name")
     private String username;
 

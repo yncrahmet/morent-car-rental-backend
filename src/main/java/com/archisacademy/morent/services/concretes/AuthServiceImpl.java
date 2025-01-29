@@ -44,6 +44,8 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = modelMapper.map(request,User.class);
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setUserId(UUID.randomUUID());
         user.setActive(true);
