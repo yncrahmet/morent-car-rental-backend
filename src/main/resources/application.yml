@@ -31,6 +31,9 @@ spring:
     template:
       default-topic: notification-topic
 
+  cache:
+    type: redis
 
-
-
+    redis:
+      host: localhost
+      port: 6379

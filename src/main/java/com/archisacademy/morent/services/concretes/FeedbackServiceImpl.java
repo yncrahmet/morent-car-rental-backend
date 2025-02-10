@@ -9,6 +9,8 @@ import com.archisacademy.morent.repositories.UserRepository;
 import com.archisacademy.morent.services.abstracts.FeedbackService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final ModelMapper modelMapper;
 
     @Override
+    @CacheEvict(value = "allFeedbacks", allEntries = true)
     public FeedbackResponse save(FeedbackRequest feedbackRequest) {
 
         return userRepository.findByUserId(feedbackRequest.getUserId())
@@ -38,7 +41,9 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
+    @Cacheable("allFeedbacks")
     public List<FeedbackAdminResponse> findAll() {
+        System.out.println("Now the data came from the database.");
         return feedbackRepository.findAll().stream()
                 .map(feedback -> modelMapper.map(feedback, FeedbackAdminResponse.class))
                 .collect(Collectors.toList());
