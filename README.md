@@ -42,7 +42,7 @@ Ensure you have the following installed:
 
 1. Clone the repository:
    ```bash
-   git clone git@github.com:<your-github-username>/morent-car-rental-backend.git
+   git clone git@github.com:yncrahmet/morent-car-rental-backend.git
    ```
 
 2. Navigate to the project directory:
