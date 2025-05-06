@@ -31,6 +31,9 @@ spring:
     template:
       default-topic: notification-topic
 
+stripe:
+  api:
+    key: stripe_api_key_here
 
 
 
