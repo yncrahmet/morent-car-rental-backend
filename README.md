@@ -75,7 +75,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 ## Contrubitors
 
 To see the contributing team, you can check out this link: [Contributors](https://github.com/archis-academy/november-backend-morent-1/graphs/contributors)
-
----
-
-Happy coding! 🚗💻
